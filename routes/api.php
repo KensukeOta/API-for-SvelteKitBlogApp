@@ -29,4 +29,5 @@ Route::controller(PostController::class)->group(function () {
     Route::post('/posts', 'store');
     Route::get('/posts/{id}', 'show')->whereNumber('id');
     Route::patch('/posts/{id}', 'update')->whereNumber('id');
+    Route::delete('/posts/{id}', 'destroy')->whereNumber('id');
 });
