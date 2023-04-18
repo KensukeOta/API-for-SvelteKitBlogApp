@@ -27,4 +27,5 @@ Route::controller(UserController::class)->group(function () {
 Route::controller(PostController::class)->group(function () {
     Route::get('/posts', 'index');
     Route::post('/posts', 'store');
+    Route::get('/posts/{id}', 'show')->whereNumber('id');
 });
