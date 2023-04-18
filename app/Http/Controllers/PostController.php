@@ -2,19 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Http\Requests\PostRequest;
+use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        $request->validate([
-            'title' => ['required', 'between:1,50'],
-            'body' => ['required', 'max:1000'],
-            'user_id' => ['required'],
-        ]);
-
         Post::create([
             'title' => $request->title,
             'body' => $request->body,
