@@ -28,4 +28,14 @@ class PostController extends Controller
         $post = Post::with('user')->findOrFail($id);
         return response()->json($post);
     }
+
+    public function update($id, PostRequest $request)
+    {
+        Post::where('id', $id)
+            ->update([
+                'title' => $request->title,
+                'body' => $request->body,
+                'user_id' => $request->user_id,
+            ]);
+    }
 }
