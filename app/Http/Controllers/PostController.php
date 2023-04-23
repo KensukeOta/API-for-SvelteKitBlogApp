@@ -12,7 +12,7 @@ class PostController extends Controller
     public function index(Request $request): JsonResponse
     {
         $posts = Post::with('user')->orderBy('created_at', 'desc')->get();
-        return response()->json($posts, 200);
+        return response()->json(['posts' => $posts], 200);
     }
 
     public function store(PostRequest $request): JsonResponse
@@ -23,31 +23,33 @@ class PostController extends Controller
             'user_id' => $request->user_id,
         ]);
 
-        return response()->json($post, 201)
+        return response()->json(['post' => $post], 201)
             ->header('Location', route('posts.show', ['id' => $post->id]));
     }
 
     public function show($id): JsonResponse
     {
         $post = Post::with('user')->findOrFail($id);
-        return response()->json($post, 200);
+        return response()->json(['post' => $post], 200);
     }
 
     public function update($id, PostRequest $request): JsonResponse
     {
-        $post = Post::where('id', $id)
+        Post::findOrFail($id)
             ->update([
                 'title' => $request->title,
                 'body' => $request->body,
                 'user_id' => $request->user_id,
             ]);
 
-        return response()->json($post, 200);
+        $post = Post::findOrFail($id);
+
+        return response()->json(['post' => $post], 200);
     }
 
     public function destroy($id): JsonResponse
     {
-        Post::where('id', $id)
+        Post::findOrFail($id)
             ->delete();
 
         return response()->json([], 204);
