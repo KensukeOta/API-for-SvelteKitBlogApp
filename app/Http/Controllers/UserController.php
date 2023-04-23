@@ -9,27 +9,30 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Http\JsonResponse;
 
 class UserController extends Controller
 {
-    public function register(RegisterRequest $request)
+    public function register(RegisterRequest $request): JsonResponse
     {
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'password_confirmation' => Hash::make($request->password_confirmation),
         ]);
+
+        return response()->json($user, 201);
     }
 
-    public function login(LoginRequest $request)
+    public function login(LoginRequest $request): JsonResponse
     {
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return response()->json(Auth::user());
+            return response()->json(Auth::user(), 200);
         }
 
         throw ValidationException::withMessages([
@@ -37,11 +40,11 @@ class UserController extends Controller
         ]);
     }
 
-    public function logout(Request $request)
+    public function logout(Request $request): JsonResponse
     {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return response()->json(['message' => 'Logged out'], 200);
+        return response()->json(['message' => 'ログアウトしました'], 200);
     }
 }
