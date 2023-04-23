@@ -22,7 +22,7 @@ class UserController extends Controller
             'password_confirmation' => Hash::make($request->password_confirmation),
         ]);
 
-        return response()->json($user, 201);
+        return response()->json(['user' => $user], 201);
     }
 
     public function login(LoginRequest $request): JsonResponse
@@ -32,7 +32,7 @@ class UserController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return response()->json(Auth::user(), 200);
+            return response()->json(['auth_user' => Auth::user()], 200);
         }
 
         throw ValidationException::withMessages([
