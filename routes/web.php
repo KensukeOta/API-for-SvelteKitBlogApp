@@ -19,6 +19,6 @@ Route::get('/', function () {
 });
 
 Route::controller(UserController::class)->group(function () {
-    Route::post('/users/login', 'login');
-    Route::post('/users/logout', 'logout');
+    Route::post('/users/login', 'login')->name('users.login');
+    Route::post('/users/logout', 'logout')->name('users.logout');
 });

@@ -21,13 +21,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::controller(UserController::class)->group(function () {
-    Route::post('/users', 'register');
+    Route::post('/users', 'register')->name('users.register');
 });
 
 Route::controller(PostController::class)->group(function () {
-    Route::get('/posts', 'index');
-    Route::post('/posts', 'store');
-    Route::get('/posts/{id}', 'show')->whereNumber('id');
-    Route::patch('/posts/{id}', 'update')->whereNumber('id');
-    Route::delete('/posts/{id}', 'destroy')->whereNumber('id');
+    Route::get('/posts', 'index')->name('posts.index');
+    Route::post('/posts', 'store')->name('posts.store');
+    Route::get('/posts/{id}', 'show')->whereNumber('id')->name('posts.show');
+    Route::patch('/posts/{id}', 'update')->whereNumber('id')->name('posts.update');
+    Route::delete('/posts/{id}', 'destroy')->whereNumber('id')->name('posts.destroy');
 });
