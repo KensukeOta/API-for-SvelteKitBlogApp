@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Post;
+use App\Models\Like;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -53,5 +54,13 @@ class User extends Authenticatable
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
+    }
+
+    /**
+     * ユーザーのいいねを取得
+     */
+    public function likes(): HasMany
+    {
+        return $this->hasMany(Like::class);
     }
 }
