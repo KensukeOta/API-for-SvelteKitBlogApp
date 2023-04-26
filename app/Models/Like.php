@@ -3,13 +3,12 @@
 namespace App\Models;
 
 use App\Models\User;
-use App\Models\Like;
+use App\Models\Post;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Post extends Model
+class Like extends Model
 {
     use HasFactory;
 
@@ -19,13 +18,13 @@ class Post extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'title',
-        'body',
         'user_id',
+        'post_id',
     ];
 
+
     /**
-     * この記事を所有しているユーザーの取得
+     * いいねを所有しているユーザーの取得
      */
     public function user(): BelongsTo
     {
@@ -33,10 +32,10 @@ class Post extends Model
     }
 
     /**
-     * ユーザーのいいねを取得
+     * いいねを所有している記事の取得
      */
-    public function likes(): HasMany
+    public function post(): BelongsTo
     {
-        return $this->hasMany(Like::class);
+        return $this->belongsTo(Post::class);
     }
 }
