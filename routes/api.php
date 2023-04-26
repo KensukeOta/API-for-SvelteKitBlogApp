@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\LikeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,4 +31,9 @@ Route::controller(PostController::class)->group(function () {
     Route::get('/posts/{id}', 'show')->whereNumber('id')->name('posts.show');
     Route::patch('/posts/{id}', 'update')->whereNumber('id')->name('posts.update');
     Route::delete('/posts/{id}', 'destroy')->whereNumber('id')->name('posts.destroy');
+});
+
+Route::controller(LikeController::class)->group(function () {
+    Route::post('/likes', 'like')->name('likes.like');
+    Route::delete('/likes', 'unlike')->name('likes.unlike');
 });
