@@ -36,4 +36,5 @@ Route::controller(PostController::class)->group(function () {
 Route::controller(LikeController::class)->group(function () {
     Route::post('/likes', 'like')->name('likes.like');
     Route::delete('/likes', 'unlike')->name('likes.unlike');
+    Route::get('/likes/{id}', 'show')->whereNumber('id')->name('likes.show');
 });

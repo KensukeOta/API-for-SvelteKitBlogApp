@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Like;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
@@ -35,5 +36,12 @@ class LikeController extends Controller
             ->delete();
 
         return response()->json(['message' => 'いいねを取り消しました'], 200);
+    }
+
+    public function show($id): JsonResponse
+    {
+        $likes = Like::where('user_id', $id)->with('post.user')->orderBy('created_at', 'desc')->get();
+
+        return response()->json(['likes' => $likes], 200);
     }
 }
