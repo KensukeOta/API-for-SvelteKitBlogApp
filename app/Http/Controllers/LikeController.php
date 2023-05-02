@@ -40,8 +40,14 @@ class LikeController extends Controller
 
     public function show($id): JsonResponse
     {
-        $likes = Like::where('user_id', $id)->with('post.user')->orderBy('created_at', 'desc')->get();
+        $posts = Post::select('posts.*')
+            ->join('likes', 'posts.id', '=', 'likes.post_id')
+            ->where('likes.user_id', $id)
+            ->with(['user', 'likes'])
+            ->withCount('likes')
+            ->orderBy('likes.created_at', 'desc')
+            ->get();
 
-        return response()->json(['likes' => $likes], 200);
+        return response()->json(['posts' => $posts], 200);
     }
 }
