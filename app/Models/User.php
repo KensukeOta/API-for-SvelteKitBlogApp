@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -62,5 +63,25 @@ class User extends Authenticatable
     public function likes(): HasMany
     {
         return $this->hasMany(Like::class);
+    }
+
+    /**
+     * ユーザーがフォローしているユーザーの一覧を取得する
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function followings(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'follows', 'follower_id', 'followee_id');
+    }
+
+    /**
+     * ユーザーをフォローしているユーザーの一覧を取得する
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function followers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'follows', 'followee_id', 'follower_id');
     }
 }
