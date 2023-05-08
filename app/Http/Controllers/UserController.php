@@ -47,4 +47,36 @@ class UserController extends Controller
         $request->session()->regenerateToken();
         return response()->json(['message' => 'ログアウトしました'], 200);
     }
+
+    /**
+     * ユーザーをフォローする
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function follow(Request $request): JsonResponse
+    {
+        $follower = User::findOrFail($request->follower_id);
+        $followee = User::findOrFail($request->followee_id);
+
+        $follower->followings()->attach($followee->id);
+
+        return response()->json(['message' => 'フォローしました。'], 201);
+    }
+
+    /**
+     * ユーザーのフォローを解除する
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function unfollow(Request $request): JsonResponse
+    {
+        $follower = User::findOrFail($request->follower_id);
+        $followee = User::findOrFail($request->followee_id);
+
+        $follower->followings()->detach($followee->id);
+
+        return response()->json(['message' => 'アンフォローしました。'], 200);
+    }
 }
