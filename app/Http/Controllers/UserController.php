@@ -49,6 +49,23 @@ class UserController extends Controller
     }
 
     /**
+     * ユーザー名からユーザーの情報を取得する
+     *
+     * @param string $name
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show($name): JsonResponse
+    {
+        $user = User::where('name', $name)->with(['likes.post.user', 'followings', 'followers'])->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'ユーザーが見つかりません。'], 404);
+        }
+
+        return response()->json(['user' => $user], 200);
+    }
+
+    /**
      * ユーザーをフォローする
      *
      * @param Request $request
