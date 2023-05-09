@@ -44,7 +44,6 @@ class LikeController extends Controller
             ->join('likes', 'posts.id', '=', 'likes.post_id')
             ->where('likes.user_id', $id)
             ->with(['user', 'likes'])
-            ->withCount('likes')
             ->orderBy('likes.created_at', 'desc')
             ->get();
 
