@@ -56,7 +56,23 @@ class UserController extends Controller
      */
     public function show($name): JsonResponse
     {
-        $user = User::where('name', $name)->with(['posts', 'likes.post.user', 'followings', 'followers'])->first();
+        $user = User::where('name', $name)
+            ->with([
+                'posts' => function ($query) {
+                    $query->orderBy('created_at', 'desc');
+                },
+                'likes' => function ($query) {
+                    $query->orderBy('created_at', 'desc');
+                },
+                'likes.post.user',
+                'followings' => function ($query) {
+                    $query->orderBy('follows.created_at', 'desc');
+                },
+                'followers' => function ($query) {
+                    $query->orderBy('follows.created_at', 'desc');
+                }
+            ])
+            ->first();
 
         if (!$user) {
             return response()->json(['message' => 'ユーザーが見つかりません。'], 404);
