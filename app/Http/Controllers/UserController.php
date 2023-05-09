@@ -56,7 +56,7 @@ class UserController extends Controller
      */
     public function show($name): JsonResponse
     {
-        $user = User::where('name', $name)->with(['likes.post.user', 'followings', 'followers'])->first();
+        $user = User::where('name', $name)->with(['posts', 'likes.post.user', 'followings', 'followers'])->first();
 
         if (!$user) {
             return response()->json(['message' => 'ユーザーが見つかりません。'], 404);
@@ -95,5 +95,33 @@ class UserController extends Controller
         $follower->followings()->detach($followee->id);
 
         return response()->json(['message' => 'アンフォローしました。'], 200);
+    }
+
+    /**
+     * 特定のユーザーがフォローしているユーザーの一覧を取得する
+     *
+     * @param string $name
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function followings($name)
+    {
+        $user = User::where('name', $name)->first();
+        $followings = $user->followings()->orderBy('pivot_created_at', 'desc')->get();
+
+        return response()->json(['followings' => $followings], 200);
+    }
+
+    /**
+     * 特定のユーザーをフォローしているユーザーの一覧を取得する
+     *
+     * @param string $name
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function followers($name)
+    {
+        $user = User::where('name', $name)->first();
+        $followers = $user->followers()->orderBy('pivot_created_at', 'desc')->get();
+
+        return response()->json(['followers' => $followers], 200);
     }
 }

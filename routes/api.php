@@ -24,6 +24,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::controller(UserController::class)->group(function () {
     Route::post('/users', 'register')->name('users.register');
     Route::get('/users/{name}', 'show')->name('users.show');
+    Route::get('/users/{name}/followings', 'followings')->name('users.followings');
+    Route::get('/users/{name}/followers', 'followers')->name('users.followings');
     Route::post('/users/follow', 'follow')->name('users.follow');
     Route::delete('/users/follow', 'unfollow')->name('users.unfollow');
 });
