@@ -61,10 +61,15 @@ class UserController extends Controller
                 'posts' => function ($query) {
                     $query->orderBy('created_at', 'desc');
                 },
+                'posts.user',
+                'posts.likes',
                 'likes' => function ($query) {
                     $query->orderBy('created_at', 'desc');
                 },
                 'likes.post.user',
+                'likes.post.likes' => function ($query) {
+                    $query->orderBy('created_at', 'desc');
+                },
                 'followings' => function ($query) {
                     $query->orderBy('follows.created_at', 'desc');
                 },
