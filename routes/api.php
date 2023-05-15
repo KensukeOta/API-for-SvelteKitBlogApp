@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\LikeController;
@@ -18,7 +20,29 @@ use App\Http\Controllers\LikeController;
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    $user = User::with([
+            'posts' => function ($query) {
+                $query->orderBy('created_at', 'desc');
+            },
+            'posts.user',
+            'posts.likes',
+            'likes' => function ($query) {
+                $query->orderBy('created_at', 'desc');
+            },
+            'likes.post.user',
+            'likes.post.likes' => function ($query) {
+                $query->orderBy('created_at', 'desc');
+            },
+            'followings' => function ($query) {
+                $query->orderBy('follows.created_at', 'desc');
+            },
+            'followers' => function ($query) {
+                $query->orderBy('follows.created_at', 'desc');
+            }
+        ])
+        ->find(Auth::id());
+
+    return response()->json($user);
 });
 
 Route::controller(UserController::class)->group(function () {
