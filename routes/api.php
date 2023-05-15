@@ -20,7 +20,7 @@ use App\Http\Controllers\LikeController;
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    $user = User::with([
+    $authUser = User::with([
             'posts' => function ($query) {
                 $query->orderBy('created_at', 'desc');
             },
@@ -42,7 +42,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         ])
         ->find(Auth::id());
 
-    return response()->json($user);
+    return response()->json(['authUser' => $authUser], 200);
 });
 
 Route::controller(UserController::class)->group(function () {
