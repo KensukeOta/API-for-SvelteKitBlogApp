@@ -23,7 +23,7 @@ class PostRequest extends FormRequest
     {
         return [
             'title' => ['required', 'between:1,50'],
-            'body' => ['required', 'max:1000'],
+            'body' => ['required', 'max:10000'],
             'user_id' => ['required'],
         ];
     }
