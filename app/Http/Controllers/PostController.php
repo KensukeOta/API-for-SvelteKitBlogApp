@@ -29,7 +29,7 @@ class PostController extends Controller
 
     public function show($id): JsonResponse
     {
-        $post = Post::with(['user', 'likes'])->findOrFail($id);
+        $post = Post::with(['user', 'likes', 'comments.user'])->findOrFail($id);
         return response()->json(['post' => $post], 200);
     }
 
