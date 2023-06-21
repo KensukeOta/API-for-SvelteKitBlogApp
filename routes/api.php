@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,4 +67,10 @@ Route::controller(LikeController::class)->group(function () {
     Route::post('/likes', 'like')->name('likes.like');
     Route::delete('/likes', 'unlike')->name('likes.unlike');
     Route::get('/likes/{id}', 'show')->whereNumber('id')->name('likes.show');
+});
+
+Route::controller(CommentController::class)->group(function () {
+    Route::post('/comments', 'store')->name('comments.store');
+    Route::patch('/comments/{id}', 'update')->whereNumber('id')->name('comments.update');
+    Route::delete('/comments/{id}', 'destroy')->whereNumber('id')->name('comments.destroy');
 });

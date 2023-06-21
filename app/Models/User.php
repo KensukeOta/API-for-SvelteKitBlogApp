@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Post;
 use App\Models\Like;
+use App\Models\Comment;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -83,5 +84,13 @@ class User extends Authenticatable
     public function followers(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'follows', 'followee_id', 'follower_id')->withTimestamps();
+    }
+
+    /**
+     * ユーザーのコメントを取得
+     */
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
     }
 }
