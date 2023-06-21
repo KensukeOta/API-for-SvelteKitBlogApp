@@ -19,4 +19,18 @@ class CommentController extends Controller
 
         return response()->json(['comment' => $comment], 201);
     }
+
+    public function update($id, CommentRequest $request): JsonResponse
+    {
+        Comment::findOrFail($id)
+            ->update([
+                'body' => $request->body,
+                'user_id' => $request->user_id,
+                'post_id' => $request->post_id,
+            ]);
+
+        $comment = Comment::findOrFail($id);
+
+        return response()->json(['comment' => $comment], 200);
+    }
 }
