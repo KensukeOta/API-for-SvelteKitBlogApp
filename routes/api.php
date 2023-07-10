@@ -61,6 +61,8 @@ Route::controller(PostController::class)->group(function () {
     Route::get('/posts/{id}', 'show')->whereNumber('id')->name('posts.show');
     Route::patch('/posts/{id}', 'update')->whereNumber('id')->name('posts.update');
     Route::delete('/posts/{id}', 'destroy')->whereNumber('id')->name('posts.destroy');
+    
+    Route::get('/posts/search', 'search')->name('posts.search');
 });
 
 Route::controller(LikeController::class)->group(function () {
