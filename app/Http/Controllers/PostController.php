@@ -54,4 +54,19 @@ class PostController extends Controller
 
         return response()->json([], 204);
     }
+
+    public function search(Request $request)
+    {
+        $searchQuery = $request->query('q');
+
+        $posts = Post::with(['user', 'likes'])
+            ->whereHas('user', function ($query) use ($searchQuery) {
+                $query->where('name', 'LIKE', "%{$searchQuery}%");
+            })
+            ->orWhere('title', 'LIKE', "%{$searchQuery}%")
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json(['posts' => $posts]);
+    }
 }
