@@ -12,7 +12,7 @@ class PostController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $posts = Post::with(['user', 'likes'])->orderBy('created_at', 'desc')->get();
+        $posts = Post::with(['user', 'likes', 'tags'])->orderBy('created_at', 'desc')->get();
         return response()->json(['posts' => $posts], 200);
     }
 
@@ -43,7 +43,7 @@ class PostController extends Controller
 
     public function show($id): JsonResponse
     {
-        $post = Post::with(['user', 'likes', 'comments.user'])->findOrFail($id);
+        $post = Post::with(['user', 'likes', 'comments.user', 'tags'])->findOrFail($id);
         return response()->json(['post' => $post], 200);
     }
 

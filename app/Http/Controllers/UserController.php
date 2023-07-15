@@ -63,10 +63,17 @@ class UserController extends Controller
                 },
                 'posts.user',
                 'posts.likes',
+                'posts.tags',
+                'comments' => function ($query) {
+                    $query->orderBy('created_at', 'desc');
+                },
+                'comments.user',
+                'comments.post.user',
                 'likes' => function ($query) {
                     $query->orderBy('created_at', 'desc');
                 },
                 'likes.post.user',
+                'likes.post.tags',
                 'likes.post.likes' => function ($query) {
                     $query->orderBy('created_at', 'desc');
                 },
@@ -75,7 +82,7 @@ class UserController extends Controller
                 },
                 'followers' => function ($query) {
                     $query->orderBy('follows.created_at', 'desc');
-                }
+                },
             ])
             ->first();
 
