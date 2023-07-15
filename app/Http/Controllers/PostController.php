@@ -49,14 +49,26 @@ class PostController extends Controller
 
     public function update($id, PostRequest $request): JsonResponse
     {
-        Post::findOrFail($id)
-            ->update([
-                'title' => $request->title,
-                'body' => $request->body,
-                'user_id' => $request->user_id,
-            ]);
-
         $post = Post::findOrFail($id);
+
+        $post->update([
+            'title' => $request->title,
+            'body' => $request->body,
+            'user_id' => $request->user_id,
+        ]);
+
+        // タグの更新処理
+        $tags = $request->tags; // リクエストから受け取ったタグの配列
+        $tagIds = [];
+
+        foreach ($tags as $tagName) {
+            if (!empty($tagName)) {
+                $tag = Tag::firstOrCreate(['name' => $tagName]);
+                $tagIds[] = $tag->id;
+            }
+        }
+
+        $post->tags()->sync($tagIds);
 
         return response()->json(['post' => $post], 200);
     }
