@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Tag;
 use App\Http\Requests\PostRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -22,6 +23,19 @@ class PostController extends Controller
             'body' => $request->body,
             'user_id' => $request->user_id,
         ]);
+
+        // タグの投稿処理
+        $tags = $request->tags; // リクエストから受け取ったタグの配列
+        $tagIds = [];
+
+        foreach ($tags as $tagName) {
+            if (!empty($tagName)) {
+                $tag = Tag::firstOrCreate(['name' => $tagName]);
+                $tagIds[] = $tag->id;
+            }
+        }
+
+        $post->tags()->attach($tagIds);
 
         return response()->json(['post' => $post], 201)
             ->header('Location', route('posts.show', ['id' => $post->id]));
