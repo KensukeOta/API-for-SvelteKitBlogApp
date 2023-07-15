@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\TagController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,7 +62,7 @@ Route::controller(PostController::class)->group(function () {
     Route::get('/posts/{id}', 'show')->whereNumber('id')->name('posts.show');
     Route::patch('/posts/{id}', 'update')->whereNumber('id')->name('posts.update');
     Route::delete('/posts/{id}', 'destroy')->whereNumber('id')->name('posts.destroy');
-    
+
     Route::get('/posts/search', 'search')->name('posts.search');
 });
 
@@ -75,4 +76,8 @@ Route::controller(CommentController::class)->group(function () {
     Route::post('/comments', 'store')->name('comments.store');
     Route::patch('/comments/{id}', 'update')->whereNumber('id')->name('comments.update');
     Route::delete('/comments/{id}', 'destroy')->whereNumber('id')->name('comments.destroy');
+});
+
+Route::controller(TagController::class)->group(function () {
+    Route::get('/tags/{tagName}', 'show')->name('tag.show');
 });

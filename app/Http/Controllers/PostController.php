@@ -73,7 +73,7 @@ class PostController extends Controller
     {
         $searchQuery = $request->query('q');
 
-        $posts = Post::with(['user', 'likes'])
+        $posts = Post::with(['user', 'likes', 'tags'])
             ->whereHas('user', function ($query) use ($searchQuery) {
                 $query->where('name', 'LIKE', "%{$searchQuery}%");
             })
