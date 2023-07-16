@@ -100,7 +100,7 @@ class UserController extends Controller
      * @param string $name
      * @return \Illuminate\Http\JsonResponse
      */
-    public function timeline($name)
+    public function timeline($name): JsonResponse
     {
         $user = User::where('name', $name)->first();
 
