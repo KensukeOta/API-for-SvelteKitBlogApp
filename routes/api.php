@@ -50,6 +50,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::controller(UserController::class)->group(function () {
     Route::post('/users', 'register')->name('users.register');
     Route::get('/users/{name}', 'show')->name('users.show');
+    Route::get('/users/{name}/timeline', 'timeline')->name('users.timeline');
     Route::get('/users/{name}/followings', 'followings')->name('users.followings');
     Route::get('/users/{name}/followers', 'followers')->name('users.followings');
     Route::post('/users/follow', 'follow')->name('users.follow');
@@ -79,5 +80,5 @@ Route::controller(CommentController::class)->group(function () {
 });
 
 Route::controller(TagController::class)->group(function () {
-    Route::get('/tags/{tagName}', 'show')->name('tag.show');
+    Route::get('/tags/{tagName}', 'show')->name('tags.show');
 });
