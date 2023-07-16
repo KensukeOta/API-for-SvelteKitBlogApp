@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Post;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
@@ -91,6 +92,32 @@ class UserController extends Controller
         }
 
         return response()->json(['user' => $user], 200);
+    }
+
+    /**
+     * フォロワーの投稿を新しい順に取得する
+     *
+     * @param string $name
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function timeline($name)
+    {
+        $user = User::where('name', $name)->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'ユーザーが見つかりません。'], 404);
+        }
+
+        $followings = $user->followings()->pluck('users.id')->toArray();
+        $followings[] = $user->id;
+
+        $timelinePosts = Post::with(['user', 'likes', 'tags'])
+            ->whereIn('user_id', $followings)
+            ->where('user_id', '!=', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json(['timelinePosts' => $timelinePosts], 200);
     }
 
     /**
