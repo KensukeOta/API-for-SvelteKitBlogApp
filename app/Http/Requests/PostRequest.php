@@ -25,6 +25,8 @@ class PostRequest extends FormRequest
             'title' => ['required', 'between:1,50'],
             'body' => ['required', 'max:10000'],
             'user_id' => ['required'],
+            'tags' => ['array'],
+            'tags.*' => ['nullable', 'string', 'max:10'],
         ];
     }
 
@@ -40,6 +42,7 @@ class PostRequest extends FormRequest
             'title.between' => 'タイトルは:max文字以内で記述してください',
             'body.required' => '本文は必須項目です',
             'body.max' => '本文は:max文字以内で記述してください',
+            'tags.*.max' => 'タグは:max文字以内で記述してください',
         ];
     }
 }
