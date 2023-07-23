@@ -158,7 +158,7 @@ class UserController extends Controller
      * @param string $name
      * @return \Illuminate\Http\JsonResponse
      */
-    public function followings($name)
+    public function followings($name): JsonResponse
     {
         $user = User::where('name', $name)->first();
         $followings = $user->followings()->orderBy('pivot_created_at', 'desc')->get();
@@ -172,7 +172,7 @@ class UserController extends Controller
      * @param string $name
      * @return \Illuminate\Http\JsonResponse
      */
-    public function followers($name)
+    public function followers($name): JsonResponse
     {
         $user = User::where('name', $name)->first();
         $followers = $user->followers()->orderBy('pivot_created_at', 'desc')->get();

@@ -81,7 +81,7 @@ class PostController extends Controller
         return response()->json([], 204);
     }
 
-    public function search(Request $request)
+    public function search(Request $request): JsonResponse
     {
         $searchQuery = $request->query('q');
 
