@@ -17,7 +17,14 @@ class CommentController extends Controller
             'post_id' => $request->post_id,
         ]);
 
-        return response()->json(['comment' => $comment], 201);
+        return response()->json(['comment' => $comment], 201)
+            ->header('Location', route('comments.show', ['id' => $comment->id]));
+    }
+
+    public function show($id): JsonResponse
+    {
+        $comment = Comment::with(['user', 'post.user', 'post.likes', 'post.tags'])->findOrFail($id);
+        return response()->json(['comment' => $comment], 200);
     }
 
     public function update($id, CommentRequest $request): JsonResponse
