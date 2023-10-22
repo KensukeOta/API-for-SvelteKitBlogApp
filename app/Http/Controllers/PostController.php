@@ -12,7 +12,7 @@ class PostController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $posts = Post::with(['user', 'likes', 'tags'])->orderBy('created_at', 'desc')->get();
+        $posts = Post::with(['user', 'likes', 'comments.user', 'tags'])->orderBy('created_at', 'desc')->get();
         return response()->json(['posts' => $posts], 200);
     }
 
